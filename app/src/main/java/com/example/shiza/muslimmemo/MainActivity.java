@@ -140,7 +140,31 @@ class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Tab number is: " + (position + 1);
+
+        switch (position)
+        {
+            case 0:
+                return "Home";
+            case 1:
+                return "Islam";
+            case 2:
+                return "History";
+            case 3:
+                return "Current Affairs";
+            case 4:
+                return "Society & Culture";
+            case 5:
+                return "Poetry";
+            case 6:
+                return "Video";
+            case 7:
+                return "Hadith";
+            case 8:
+                return "About";
+            case 9:
+                return "Photo Gallery";
+        }
+        return "Home";
     }
 }
 
