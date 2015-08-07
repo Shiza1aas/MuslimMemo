@@ -3,12 +3,17 @@ package com.example.shiza.muslimmemo;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,18 +25,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView mDrawer;
     private DrawerLayout mDrawerLayout;
     private  ActionBarDrawerToggle drawerToggle;
+    private ViewPager viewPager;
+    private MyPagerAdapter adapter;
+    private TabLayout mTabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar)findViewById(R.id.app_bar);
+        toolbar.setTitle("Muslim Memo");
 
         setSupportActionBar(toolbar);
-
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
         mDrawer = (NavigationView)findViewById(R.id.main_drawer);
         mDrawer.setNavigationItemSelectedListener(this);
+        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-
+        viewPager = (ViewPager)findViewById(R.id.pager);
 
         drawerToggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout,
@@ -40,6 +50,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.drawer_close);
 
         mDrawerLayout.setDrawerListener(drawerToggle);
+        viewPager.setAdapter(adapter);
+
+        mTabLayout.setTabsFromPagerAdapter(adapter);
+        mTabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
         drawerToggle.syncState();
     }
@@ -102,4 +118,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return false;
     }
+
 }
+
+class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+    public MyPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        Home myFragment = new Home();
+        return myFragment;
+    }
+
+    @Override
+    public int getCount() {
+        return 10;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return "Tab number is: " + (position + 1);
+    }
+}
+
